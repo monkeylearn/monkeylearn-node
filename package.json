@@ -1,0 +1,27 @@
+{
+  "name": "monkeylearn",
+  "description": "Official Node client for the MonkeyLearn API.",
+  "version": "0.1",
+  "author": "MonkeyLearn <hello@monkeylearn.com>",
+  "contributors": [
+    {
+      "name": "monkeylearn-node contributors",
+      "url": "https://github.com/monkeylearn/monkeylearn-node/graphs/contributors"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monkeylearn/monkeylearn-node.git"
+  },
+  "dependencies": {
+    "request": "2.55.x",
+    "q": "0.9.7",
+    "sleep": "3.0.0",
+    "util": "0.10.3"
+  },
+  "main": "./lib",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "license": "MIT"
+}
