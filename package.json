@@ -18,9 +18,8 @@
     "node"
   ],
   "dependencies": {
-    "request": "2.55.x",
     "q": "0.9.7",
-    "sleep": "3.0.0",
+    "request": "2.55.x",
     "util": "0.10.3"
   },
   "author": "rsteca <rodrigo@monkeylearn.com> (http://monkeylearn.com)",
