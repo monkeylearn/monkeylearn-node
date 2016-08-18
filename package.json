@@ -1,10 +1,9 @@
 {
   "name": "monkeylearn",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Official Node client for the MonkeyLearn API.",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/monkeylearn/monkeylearn-node.git"
