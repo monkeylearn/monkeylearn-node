@@ -18,7 +18,7 @@
     "node"
   ],
   "dependencies": {
-    "request": "2.55.x",
+    "request": "2.74.0",
     "q": "0.9.7",
     "sleep": "3.0.0",
     "util": "0.10.3"
