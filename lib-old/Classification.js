@@ -11,19 +11,19 @@ var Q = require('q');
 function Classification(token, base_endpoint) {
     this.token = token;
     this.endpoint = base_endpoint + 'classifiers/';
-    this.categories = new Categories(token, base_endpoint);
+    this.tags = new tags(token, base_endpoint);
 }
 
 util.inherits(Classification, SleepRequests);
 
-Classification.prototype.classify = function(module_id, text_list, sandbox, callback,
+Classification.prototype.classify = function(model_id, text_list, sandbox, callback,
                                              batch_size, sleep_if_throttled) {
     var self = this;
     sandbox = sandbox || false;
     batch_size = batch_size || settings.DEFAULT_BATCH_SIZE;
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
 
-    var url = this.endpoint + module_id + '/classify/';
+    var url = this.endpoint + model_id + '/classify/';
     if (sandbox) {
         url += '?sandbox=1';
     }
@@ -32,11 +32,11 @@ Classification.prototype.classify = function(module_id, text_list, sandbox, call
         handleErrors.checkBatchLimits(text_list, batch_size);
     });
 
-    for (var i = 0; i < text_list.length; i += batch_size) {
+    for (var ii = 0; ii < text_list.length; ii += batch_size) {
         var data = {
-            'text_list': text_list.slice(i, i + batch_size)
+            'text_list': text_list.slice(ii, ii + batch_size)
         }
-        if (i === 0) {
+        if (ii === 0) {
             promise = promise.then(function(data) {
                 return Q.all([self.makeRequest(url, 'POST', data, sleep_if_throttled)]);
             }.bind(null, data));
@@ -70,9 +70,9 @@ Classification.prototype.list = function(callback, sleep_if_throttled) {
     return promise.nodeify(callback);
 };
 
-Classification.prototype.detail = function(module_id, callback, sleep_if_throttled) {
+Classification.prototype.detail = function(model_id, callback, sleep_if_throttled) {
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
-    var url = this.endpoint + module_id + '/';
+    var url = this.endpoint + model_id + '/';
     var promise = Q.all([this.makeRequest(url, 'GET', null, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -80,9 +80,9 @@ Classification.prototype.detail = function(module_id, callback, sleep_if_throttl
     return promise.nodeify(callback);
 };
 
-Classification.prototype.uploadSamples = function(module_id, samples_with_categories, callback, sleep_if_throttled) {
+Classification.prototype.uploadSamples = function(model_id, samples_with_tags, callback, sleep_if_throttled) {
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
-    var url = this.endpoint + module_id + '/samples/';
+    var url = this.endpoint + model_id + '/samples/';
     var data_samples = [];
     function isArray(a, typeofElems) {
         if((!!a) && (a.constructor === Array)){
@@ -96,31 +96,32 @@ Classification.prototype.uploadSamples = function(module_id, samples_with_catego
             return false;
         }
     }
-    for (var i = 0; i < samples_with_categories.length; i++) {
+    for (var i = 0; i < samples_with_tags.length; i++) {
         var sample;
-        var category = samples_with_categories[i][1];
-        if (typeof category === "number" || isArray(category, "number")) {
+        var tag = samples_with_tags[i][1];
+        if (typeof tag === "number" || isArray(tag, "number")) {
             sample = {
-                text: samples_with_categories[i][0],
-                category_id: category
+                text: samples_with_tags[i][0],
+                tag_id: tag
             };
-        } else if (typeof category === "string" || isArray(category, "string")) {
+        } else if (typeof tag === "string" || isArray(tag, "string")) {
             sample = {
-                text: samples_with_categories[i][0],
-                category_path: category
+                text: samples_with_tags[i][0],
+                tag_path: tag
             };
-        } else if (!category) {
+        } else if (!tag) {
             sample = {
-                text: samples_with_categories[i][0]
+                text: samples_with_tags[i][0]
             };
         } else {
             throw new MonkeyLearnException(
-                'Invalid category value in sample ' + i
+                'Invalid tag value in sample ' + i
             );
         }
-        if (samples_with_categories[i].length > 2 && (typeof samples_with_categories[i][2] === "string" ||
-                isArray(samples_with_categories[i][2], "string"))) {
-            sample.tag = samples_with_categories[i][2];
+        if (samples_with_tags[i].length > 2 && (typeof samples_with_tags[i][2] === "string" ||
+                isArray(samples_with_tags[i][2], "string"))) {
+            // TODO: this was autoreplaced
+            sample.mark = samples_with_tags[i][2];
         }
 
         data_samples.push(sample);
@@ -135,9 +136,9 @@ Classification.prototype.uploadSamples = function(module_id, samples_with_catego
     return promise.nodeify(callback);
 };
 
-Classification.prototype.train = function(module_id, callback, sleep_if_throttled) {
+Classification.prototype.train = function(model_id, callback, sleep_if_throttled) {
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
-    var url = this.endpoint + module_id + '/train/';
+    var url = this.endpoint + model_id + '/train/';
     var promise = Q.all([this.makeRequest(url, 'POST', null, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -145,9 +146,9 @@ Classification.prototype.train = function(module_id, callback, sleep_if_throttle
     return promise.nodeify(callback);
 };
 
-Classification.prototype.deploy = function(module_id, callback, sleep_if_throttled) {
+Classification.prototype.deploy = function(model_id, callback, sleep_if_throttled) {
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
-    var url = this.endpoint + module_id + '/deploy/';
+    var url = this.endpoint + model_id + '/deploy/';
     var promise = Q.all([this.makeRequest(url, 'POST', null, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -155,9 +156,9 @@ Classification.prototype.deploy = function(module_id, callback, sleep_if_throttl
     return promise.nodeify(callback);
 };
 
-Classification.prototype.delete = function(module_id, callback, sleep_if_throttled) {
+Classification.prototype.delete = function(model_id, callback, sleep_if_throttled) {
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
-    var url = this.endpoint + module_id + '/';
+    var url = this.endpoint + model_id + '/';
     var promise = Q.all([this.makeRequest(url, 'DELETE', null, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -211,16 +212,16 @@ Classification.prototype.create = function(
     return promise.nodeify(callback);
 };
 
-function Categories(token, base_endpoint) {
+function tags(token, base_endpoint) {
     this.token = token;
     this.endpoint = base_endpoint + 'classifiers/';
 }
 
-util.inherits(Categories, SleepRequests);
+util.inherits(tags, SleepRequests);
 
-Classification.prototype.detail = function(module_id, category_id, callback, sleep_if_throttled) {
+Classification.prototype.detail = function(model_id, tag_id, callback, sleep_if_throttled) {
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
-    var url = this.endpoint + module_id + '/categories/' + category_id + '/';
+    var url = this.endpoint + model_id + '/tags/' + tag_id + '/';
     var promise = Q.all([this.makeRequest(url, 'GET', null, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -228,13 +229,13 @@ Classification.prototype.detail = function(module_id, category_id, callback, sle
     return promise.nodeify(callback);
 };
 
-Categories.prototype.create = function(module_id, name, parent_id, callback, sleep_if_throttled) {
+tags.prototype.create = function(model_id, name, parent_id, callback, sleep_if_throttled) {
     var data = {
         "name": name,
         "parent_id": parent_id
     }
 
-    var url = this.endpoint + module_id + '/categories/';
+    var url = this.endpoint + model_id + '/tags/';
     var promise = Q.all([this.makeRequest(url, 'POST', data, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -242,7 +243,7 @@ Categories.prototype.create = function(module_id, name, parent_id, callback, sle
     return promise.nodeify(callback);
 };
 
-Categories.prototype.edit = function(module_id, category_id, name, parent_id,
+tags.prototype.edit = function(model_id, tag_id, name, parent_id,
                                      callback, sleep_if_throttled) {
     var data_dirty = {
         "name": name,
@@ -259,7 +260,7 @@ Categories.prototype.edit = function(module_id, category_id, name, parent_id,
         }
     }
 
-    var url = this.endpoint + module_id + '/categories/' + category_id + '/';
+    var url = this.endpoint + model_id + '/tags/' + tag_id + '/';
     var promise = Q.all([this.makeRequest(url, 'POST', data, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);
@@ -267,11 +268,11 @@ Categories.prototype.edit = function(module_id, category_id, name, parent_id,
     return promise.nodeify(callback);
 };
 
-Categories.prototype.delete = function(module_id, category_id, samples_strategy,
-                                       samples_category_id, callback, sleep_if_throttled) {
+tags.prototype.delete = function(model_id, tag_id, samples_strategy,
+                                       samples_tag_id, callback, sleep_if_throttled) {
     var data_dirty = {
         "samples-strategy": samples_strategy,
-        "samples-category-id": samples_category_id
+        "samples-tag-id": samples_tag_id
     }
 
     var data = {};
@@ -284,7 +285,7 @@ Categories.prototype.delete = function(module_id, category_id, samples_strategy,
         }
     }
 
-    var url = this.endpoint + module_id + '/categories/' + category_id + '/';
+    var url = this.endpoint + model_id + '/tags/' + tag_id + '/';
     var promise = Q.all([this.makeRequest(url, 'DELETE', data, sleep_if_throttled)]);
     promise = promise.then(function (response_array) {
         return new MonkeyLearnResponse(response_array);

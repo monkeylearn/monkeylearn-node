@@ -16,11 +16,5 @@ module.exports = {
                 "The text_list can't be empty."
             );
         }
-
-        if (text_list.indexOf('') > -1) {
-            throw new MonkeyLearnException(
-                "You have an empty text in position " + text_list.indexOf('') + " in text_list."
-            );
-        }
     }
 };

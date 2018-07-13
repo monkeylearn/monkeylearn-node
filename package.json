@@ -1,7 +1,7 @@
 {
   "name": "monkeylearn",
-  "version": "0.1.11",
-  "description": "Official Node client for the MonkeyLearn API.",
+  "version": "3.0.0",
+  "description": "Official Node client for the MonkeyLearn API version 3.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,12 +18,17 @@
     "node"
   ],
   "dependencies": {
-    "request": "2.55.x",
-    "q": "0.9.7",
-    "sleep": "3.0.0",
-    "util": "0.10.3"
+    "node-fetch": "^2.1.2",
+    "lodash": "^4.17.10"
   },
   "author": "rsteca <rodrigo@monkeylearn.com> (http://monkeylearn.com)",
+  "contributors": [
+    "rsteca <rodrigo@monkeylearn.com> (http://monkeylearn.com)",
+    "brusteca <bruno@monkeylearn.com> (https://github.com/brusteca)"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/monkeylearn/monkeylearn-node/issues"

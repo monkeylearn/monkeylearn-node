@@ -14,13 +14,13 @@ function Extraction(token, base_endpoint) {
 
 util.inherits(Extraction, SleepRequests);
 
-Extraction.prototype.extract = function(module_id, text_list, callback,
+Extraction.prototype.extract = function(model_id, text_list, callback,
                                         batch_size, sleep_if_throttled) {
     var self = this;
     batch_size = batch_size || settings.DEFAULT_BATCH_SIZE;
     sleep_if_throttled = typeof sleep_if_throttled !== 'undefined' ?  sleep_if_throttled : true;
 
-    var url = this.endpoint + module_id + '/extract/';
+    var url = this.endpoint + model_id + '/extract/';
 
     var promise = Q.fcall(function () {
         handleErrors.checkBatchLimits(text_list, batch_size);

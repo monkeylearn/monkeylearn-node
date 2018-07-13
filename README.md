@@ -14,7 +14,7 @@ Usage examples
 
 Here are some examples of how to use the library in order to create and use classifiers:
 ```javascript
-var MonkeyLearn, ml, p, module_id, root_id, negative_id, positive_id, samples;
+var MonkeyLearn, ml, p, model_id, root_id, negative_id, positive_id, samples;
 
 MonkeyLearn = require('monkeylearn');
 
@@ -24,35 +24,35 @@ ml = new MonkeyLearn('<YOUR API KEY HERE>');
 // Create a new classifier
 p = ml.classifiers.create('Test Classifier').then(function (res) {
     // Get the id of the new module    
-    module_id = res.result.classifier.hashed_id
+    model_id = res.result.classifier.hashed_id
     
     // Get the classifier detail
-    return ml.classifiers.detail(module_id);
+    return ml.classifiers.detail(model_id);
 }).then(function (res) {    
     // Get the id of the root node
-    root_id = res.result.sandbox_categories[0].id
+    root_id = res.result.sandbox_tags[0].id
     
-    // Create a negative category on the root node
-    return ml.classifiers.categories.create(module_id, 'Negative', root_id);
+    // Create a negative tag on the root node
+    return ml.classifiers.tags.create(model_id, 'Negative', root_id);
 }).then(function (res) {   
-    // Get the id of the negative category
-    negative_id = res.result.category.id
+    // Get the id of the negative tag
+    negative_id = res.result.tag.id
     
-    // Create a positive category on the root node
-    return ml.classifiers.categories.create(module_id, 'Positive', root_id);
+    // Create a positive tag on the root node
+    return ml.classifiers.tags.create(model_id, 'Positive', root_id);
 }).then(function (res) {    
-    // Get the id of the positive category
-    positive_id = res.result.category.id
+    // Get the id of the positive tag
+    positive_id = res.result.tag.id
     
     // Now let's upload some samples
     samples = [['The movie was terrible, I hated it.', negative_id], ['I love this movie, I want to watch it again!', positive_id]];
-    return ml.classifiers.uploadSamples(module_id, samples);
+    return ml.classifiers.uploadSamples(model_id, samples);
 }).then(function (res) {    
     // Now let's train the module!
-    return ml.classifiers.train(module_id);
+    return ml.classifiers.train(model_id);
 }).then(function (res) {
     // Classify some texts
-    return ml.classifiers.classify(module_id, ['I love the movie', 'I hate the movie'], true);
+    return ml.classifiers.classify(model_id, ['I love the movie', 'I hate the movie'], true);
 }).then(function (res) {    
     console.log(res.result);
 });
