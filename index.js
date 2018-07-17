@@ -4,16 +4,20 @@ module.exports = MonkeyLearn;
 
 const Classifiers = require('./lib/classifiers');
 
-function MonkeyLearn(options) {
-  if (!options.hasOwnProperty('api_key')) {
-    throw new Error('A MonkeyLearn api key is required.');
+function MonkeyLearn(api_key, base_url) {
+  if (api_key == undefined) {
+    throw new Error('A MonkeyLearn API key is required to use the API. Find yours at https://app.monkeylearn.com/main/my-account/tab/api-keys/');
   }
-  if (!options.hasOwnProperty('base_url')) {
-    options.base_url = 'https://api.monkeylearn.com/v3/';
+  base_url = base_url || 'https://api.monkeylearn.com/v3/'
+
+  const options = {
+    api_key: api_key,
+    base_url: base_url
   }
+
   const api = {
-    api_key: options.api_key,
-    base_url: options.base_url,
+    api_key: api_key,
+    base_url: base_url,
     classifiers: new Classifiers(options),
     extractors: 0
   }
