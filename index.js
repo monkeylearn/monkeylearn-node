@@ -3,18 +3,22 @@
 module.exports = MonkeyLearn;
 
 const defaults = require('lodash/defaults');
+const isString = require('lodash/isString');
 
+const MonkeyLearnError = require('./lib/monkeylearn-error');
 const Classifiers = require('./lib/classifiers');
 
 function MonkeyLearn(api_key, settings) {
-  if (api_key == undefined) {
-    throw new Error('A MonkeyLearn API key is required to use the API. Find yours at https://app.monkeylearn.com/main/my-account/tab/api-keys/');
+  if (!isString(api_key)) {
+    throw new MonkeyLearnError('', null, 'A MonkeyLearn API key string is required to use the API. Find yours at https://app.monkeylearn.com/main/my-account/tab/api-keys/');
   }
   settings = settings || {};
   defaults(settings, {
     base_url: 'https://api.monkeylearn.com/v3/',
     retry_if_throttled: true,
-    throttling_max_retries: 3
+    throttling_max_retries: 3,
+    auto_batch: true,
+    batch_size: 200
   })
 
   this.api_key = api_key;
