@@ -1,6 +1,6 @@
 {
   "name": "monkeylearn",
-  "version": "3.0.0",
+  "version": "3.2.0",
   "description": "Official Node client for the MonkeyLearn API version 3.",
   "main": "index.js",
   "scripts": {

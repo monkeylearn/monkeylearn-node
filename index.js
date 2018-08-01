@@ -7,6 +7,7 @@ const isString = require('lodash/isString');
 
 const MonkeyLearnError = require('./lib/monkeylearn-error');
 const Classifiers = require('./lib/classifiers');
+const Extractors = require('./lib/extractors');
 
 function MonkeyLearn(api_key, settings) {
   if (!isString(api_key)) {
@@ -24,5 +25,5 @@ function MonkeyLearn(api_key, settings) {
   this.api_key = api_key;
   this.settings = settings;
   this.classifiers = new Classifiers(this);
-  this.extractors = 0;
+  this.extractors = new Extractors(this);
 }
