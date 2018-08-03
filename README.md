@@ -20,20 +20,18 @@ const ml = new MonkeyLearn('<YOUR API KEY HERE>')
 // Classify some texts
 let model_id = 'cl_Jx8qzYJh'
 // the full options are described in the docs: https://monkeylearn.com/api/v3/#classify
-let params = {
-    data: [
-        'Some text to classify'
-        {
-            text: 'You can also send text inside an object like this'
-        },
-        {
-            text: 'And include an external id',
-            external_id: '195619'
-        }
-    ]
-}
+let data = [
+    'Some text to classify'
+    {
+        text: 'You can also send text inside an object like this'
+    },
+    {
+        text: 'And include an external id',
+        external_id: '195619'
+    }
+]
 
-ml.classifiers.classify(model_id, params).then(response => {
+ml.classifiers.classify(model_id, data).then(response => {
         // handle response
         console.log(response)
         console.log(response.body)
@@ -74,15 +72,13 @@ The same is true for extractors:
 ```javascript
 let model_id = 'ex_wNDME4vE'
 // the full options are described in the docs: https://monkeylearn.com/api/v3/#extract
-let params = {
-    data: [
-        'The gorilla exhibit is open every day from 10am, except for December 25th. \
-        We have FREE on-site parking! We will host an exclusive orangutan show on \
-        November 5th, 2013 at 2 pm. Don\'t be late!'
-    ]
-}
+let data = [
+    'The gorilla exhibit is open every day from 10am, except for December 25th. \
+    We have FREE on-site parking! We will host an exclusive orangutan show on \
+    November 5th, 2013 at 2 pm. Don\'t be late!'
+]
 
-ml.extractors.extract(model_id, params).then(response => {
+ml.extractors.extract(model_id, data).then(response => {
         // handle response
         console.log(response)
         console.log(response.body)
@@ -159,11 +155,9 @@ const ml = new MonkeyLearn('<YOUR API KEY HERE>', {
     batch_size: 200
 })
 
-const params = {
-    data: [ /*A list of 10 000 texts*/]
-}
+const data = [ /*A list of 10 000 texts*/]
 
-ml.classifiers,classify(model_id, params).then(response => {
+ml.classifiers,classify(model_id, data).then(response => {
         console.log(response.body.length)
     }).catch(error => {
         // error handling
@@ -187,7 +181,7 @@ However, `error.response.raw_responses` contains _all_ the responses, the first 
 
 So, in case of error, something like this should be done in order to not waste the used queries:
 ```javascript
-ml.classifiers,classify(model_id, params).then(response => {
+ml.classifiers,classify(model_id, data).then(response => {
         // handle a successful response
         return response.body
     }).catch(error => {
@@ -243,7 +237,7 @@ ml.classifiers.create({
     ngram_range: [1, 1]
 }).then(response => {
     console.log(response.body)
-    model_id = response.body.model_id
+    model_id = response.body.id
 }).catch(error => {
     console.log(error)
 })
@@ -271,15 +265,13 @@ ml.classifiers.edit(model_id, {
 
 Upload data:
 ```javascript
-ml.classifiers.upload_data(model_id, {
-    data: [{
-        text: 'First text':
-        tags: ['Tag 1']
-    }, {
-        text: 'Second text':
-        tags: ['Tag 2']
-    }]
-}).then(response => {
+ml.classifiers.upload_data(model_id, [{
+    text: 'First text':
+    tags: ['Tag 1']
+}, {
+    text: 'Second text':
+    tags: ['Tag 2']
+}]).then(response => {
     console.log(response.body)
 }).catch(error => {
     console.log(error)
