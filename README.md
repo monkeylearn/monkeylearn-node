@@ -18,10 +18,10 @@ const MonkeyLearn = require('monkeylearn')
 const ml = new MonkeyLearn('<YOUR API KEY HERE>')
 
 // Classify some texts
-let model_id = 'cl_Jx8qzYJh'
+let model_id = 'cl_pi3C7JiL'
 // the full options are described in the docs: https://monkeylearn.com/api/v3/#classify
 let data = [
-    'Some text to classify'
+    'Some text to classify',
     {
         text: 'You can also send text inside an object like this'
     },
