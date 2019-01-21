@@ -5,7 +5,16 @@ Official Node client for the MonkeyLearn API. Build and consume machine learning
 
 You can use npm to install the library:
 
-    npm install monkeylearn
+```bash
+$ npm install monkeylearn
+```
+
+Alternatively, you can just clone the repository and install:
+
+```bash
+$ cd monkeylearn-node/
+$ npm install
+```
 
 ## Simple usage examples
 
@@ -357,6 +366,112 @@ Extractor detail:
 ```javascript
 ml.extractors.detail(model_id).then(response => {
     console.log(response.body)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+### [Workflows]()
+
+Workflow detail:
+```javascript
+ml.workflows.detail(model_id).then(response => {
+    console.log(response.body)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+Create new workflow:
+```javascript
+ml.workflows.create({
+    name: 'My workflow',
+    description: 'The workflow description',
+    db_name: 'my_workflow',
+    webhook_url: 'https://myurlwebhook.com/something/',
+    steps: [{
+        name: 'language',
+        model_id: 'cl_Vay9jh28'
+    }, {
+        name: 'sentiment',
+        model_id: 'cl_pi3C7JiL',
+        conditions: [{
+            target_step: 'language',
+            column_name: 'tag_name',
+            operator: 'includes',
+            value: 'English-en'
+        }]
+    }]
+}).then(response => {
+    console.log(response.body)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+Delete workflow:
+```javascript
+ml.workflows.delete(model_id).then(response => {
+    console.log(response)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+### [Workflow steps]()
+
+Create workflow step:
+```javascript
+ml.workflows.steps.create(model_id, {
+    name: 'keywords',
+    model_id: 'ex_YCya9nrn'
+}).then(response => {
+    console.log(response)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+
+### [Workflow data]()
+
+Create data:
+```javascript
+ml.workflows.data.create(model_id, [
+    'Some text',
+    {
+        text: 'You can also send text inside an object like this'
+    },
+    {
+        text: 'And include custom metadata',
+        creation_date: '2018-07-07',  // this is custom metadata
+        rating: 1,  // this is custom metadata
+    }
+]).then(response => {
+    console.log(response)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+List data:
+```javascript
+ml.workflows.data.list(model_id).then(response => {
+    console.log(response)
+}).catch(error => {
+    console.log(error)
+})
+```
+
+### [Workflow metadata]()
+
+Create metadata:
+```javascript
+ml.workflows.metadata.create(model_id, {
+    name: 'creation_date',
+    type: 'date'
+}).then(response => {
+    console.log(response)
 }).catch(error => {
     console.log(error)
 })
