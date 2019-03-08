@@ -444,8 +444,8 @@ ml.workflows.data.create(model_id, [
     },
     {
         text: 'And include custom metadata',
-        creation_date: '2018-07-07',  // this is custom metadata
-        rating: 1,  // this is custom metadata
+        creation_date: '2018-07-07',  // this is a custom field
+        rating: 1,  // this is a custom field
     }
 ]).then(response => {
     console.log(response)
@@ -463,11 +463,11 @@ ml.workflows.data.list(model_id).then(response => {
 })
 ```
 
-### [Workflow metadata]()
+### [Workflow custom fields]()
 
-Create metadata:
+Create custom field:
 ```javascript
-ml.workflows.metadata.create(model_id, {
+ml.workflows.custom_fields.create(model_id, {
     name: 'creation_date',
     type: 'date'
 }).then(response => {
