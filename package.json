@@ -1,6 +1,6 @@
 {
   "name": "monkeylearn",
-  "version": "3.2.1",
+  "version": "3.4.0",
   "description": "Official Node client for the MonkeyLearn API version 3.",
   "main": "index.js",
   "scripts": {
@@ -21,9 +21,9 @@
     "node-fetch": "^2.1.2",
     "lodash": "^4.17.10"
   },
-  "author": "rsteca <rodrigo@monkeylearn.com> (http://monkeylearn.com)",
+  "author": "MonkeyLearn <hello@monkeylearn.com> (https://monkeylearn.com)",
   "contributors": [
-    "rsteca <rodrigo@monkeylearn.com> (http://monkeylearn.com)",
+    "rsteca <rodrigo@monkeylearn.com> (https://github.com/rsteca/)",
     "brusteca <bruno@monkeylearn.com> (https://github.com/brusteca)"
   ],
   "engines": {
