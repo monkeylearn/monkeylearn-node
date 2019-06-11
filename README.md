@@ -371,7 +371,7 @@ ml.extractors.detail(model_id).then(response => {
 })
 ```
 
-### [Workflows]()
+### [Workflows](https://monkeylearn.com/api/v3/#workflow-api)
 
 Workflow detail:
 ```javascript
@@ -418,7 +418,7 @@ ml.workflows.delete(model_id).then(response => {
 })
 ```
 
-### [Workflow steps]()
+### [Workflow steps](https://monkeylearn.com/api/v3/#step-detail)
 
 Create workflow step:
 ```javascript
@@ -433,7 +433,7 @@ ml.workflows.steps.create(model_id, {
 ```
 
 
-### [Workflow data]()
+### [Workflow data](https://monkeylearn.com/api/v3/#list-workflow-data)
 
 Create data:
 ```javascript
@@ -463,7 +463,7 @@ ml.workflows.data.list(model_id).then(response => {
 })
 ```
 
-### [Workflow custom fields]()
+### [Workflow custom fields](https://monkeylearn.com/api/v3/#create-custom-field)
 
 Create custom field:
 ```javascript
