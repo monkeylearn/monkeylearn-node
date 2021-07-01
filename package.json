@@ -3,6 +3,7 @@
   "version": "3.4.0",
   "description": "Official Node client for the MonkeyLearn API version 3.",
   "main": "index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
